@@ -10,6 +10,7 @@ def generate_app(get_processed_inputs, inpaint):
         # State components for session-specific data
         input_points = gr.State([])
         input_image = gr.State(None)
+        display_image = gr.State(None)  # Separate state for displayed image
         
         gr.Markdown(
         """
@@ -50,7 +51,7 @@ def generate_app(get_processed_inputs, inpaint):
                 width=IMG_SIZE,
             )            
         
-        # Define other UI components here, before any event handlers that use them
+        # Define other UI components
         with gr.Row():
             cfg = gr.Slider(
                 label="Classifier-Free Guidance Scale", 
@@ -105,18 +106,21 @@ def generate_app(get_processed_inputs, inpaint):
                 ]
             )
         
-        def get_points(img, points, evt: gr.SelectData):
+        def get_points(img, points, display_img_state, evt: gr.SelectData):
             x, y = evt.index[0], evt.index[1]
             updated_points = points + [[x, y]]
             
+            # Store original image if first point
             if len(updated_points) == 1:
                 input_image_val = img.copy()
             else:
                 input_image_val = img
-            
+                
+            # Run SAM
             sam_output = run_sam(input_image_val, updated_points)
             
-            img_copy = img.copy()
+            # Draw points on a copy of the display image
+            img_copy = display_img_state.copy() if display_img_state is not None else img.copy()
             draw = ImageDraw.Draw(img_copy)
             size = 10
             for point in updated_points:
@@ -124,7 +128,7 @@ def generate_app(get_processed_inputs, inpaint):
                 draw.line((x - size, y, x + size, y), fill="green", width=5)
                 draw.line((x, y - size, x, y + size), fill="green", width=5)
             
-            return updated_points, input_image_val, sam_output, img_copy
+            return updated_points, input_image_val, sam_output, img_copy, img_copy
 
         def run_sam(img, points):
             if img is None:
@@ -159,10 +163,10 @@ def generate_app(get_processed_inputs, inpaint):
         def reset_points():
             # Return default values for all components that need to be reset
             return [], None, None, None, None, "", "", False
-
+        
         def preprocess(input_img):
             if input_img is None:
-                return None
+                return None, None
             width, height = input_img.size
             if width != height:
                 gr.Warning("Image is not square, adding white padding")
@@ -172,22 +176,26 @@ def generate_app(get_processed_inputs, inpaint):
                 top = (new_size - height) // 2
                 new_image.paste(input_img, (left, top))
                 input_img = new_image
-            return input_img.resize((IMG_SIZE, IMG_SIZE))
+            
+            processed = input_img.resize((IMG_SIZE, IMG_SIZE))
+            return processed, processed
 
         # Event handlers
         display_img.select(
             fn=get_points,
-            inputs=[display_img, input_points],
-            outputs=[input_points, input_image, sam_mask, display_img]
+            inputs=[display_img, input_points, display_image],
+            outputs=[input_points, input_image, sam_mask, display_img, display_image]
         )
+        
+        display_img.upload(
+            fn=preprocess,
+            inputs=[display_img],
+            outputs=[display_img, display_image]
+        )
+        
         display_img.clear(
             fn=reset_points,
             outputs=[input_points, input_image, display_img, sam_mask, result, prompt, neg_prompt, checkbox]
-        )
-        display_img.change(
-            fn=preprocess,
-            inputs=[display_img],
-            outputs=[display_img]
         )
         
         reset_btn.click(
@@ -201,5 +209,5 @@ def generate_app(get_processed_inputs, inpaint):
             outputs=[result]
         )
 
-    demo.queue(max_size=1).launch(share=True, debug=True)
+    demo.queue(max_size=1).launch(share=False, debug=True)
     return demo
