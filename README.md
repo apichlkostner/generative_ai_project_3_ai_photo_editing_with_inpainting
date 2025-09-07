@@ -54,3 +54,44 @@ Value from left to right 1, 7, 14, 50
 
 It can be seen that the model changes the mask with in image that looks increasingly like the text prompt when the parameter is increased.
 
+## Prompt engineering
+
+
+## Iterative changes
+
+From the image with the Teide, another scene should be created:
+- Teide should be a erupting vulcano
+- The sky is dark with lightning
+- Teide in surrounded by an ocean which is green glowing
+- In from of Teide there is an island
+- At the island there is a platform with dancing aliens
+
+After every prompt, the result is the source for the next prompt.
+
+### Original Image
+
+![alt Teide in the ocean](teide.jpg)
+
+### First prompt
+- Prompt: a green ocean with an island, a dark sky with lightning
+- Mask: Teide
+- Target: background
+
+![alt Teide in the ocean](teide_2.webp)
+
+### Second prompt
+- Prompt: a erupting vulcano with orange and red lava
+- Mask: background
+- Target: Teide
+
+![alt Teide in the ocean](teide_3.webp)
+
+### Third prompt
+- Prompt: aliens dancing on a platform surrounded by a green glowing ocean
+- Mask: island, vulcano, sky
+- Target: Ocean
+
+![alt Teide in the ocean](teide_4.webp)
+
+-Different random number generator seed
+![alt Teide in the ocean](teide_5.webp)
