@@ -1,6 +1,8 @@
 # AI Photo Editing with Inpainting
 
-For Udacity course "Generative AI"
+For Udacity course "Generative AI", based on (https://github.com/udacity/Computer-Vision-and-Generative-AI-Project).
+
+The library app.py was modified to run with gradio 4 since the old versions from the original project don't runs with modern GPU hardware.
 
 ## Project
 
@@ -30,14 +32,25 @@ This project should demonstate a simple AI photo editing tool where the user can
 
 ### Teide (mountain)
 
-#### Teide in the ocean
+#### Teide in the ocean with sun
 
-![alt lizard as dragon](teide_in_ocean.png)
+![alt Teide in the ocean](teide_in_ocean.png)
 
-#### lizard on a table
+#### Teide modified with sun in ocean with wooden island foreground
 
-![alt lizard on wooden table](lizard_on_wooden_table.png)
+![alt Teide with sun](teide_with_sun.png)
 
-#### lizard on a steel table
+#### Teide modified without sun with wooden island foreground
 
-![alt lizard on stelle table](lizard_on_steel_table.png)
+![alt Teide without sun](teide_without_sun.png)
+
+## Parameter effect
+
+### The diffusion model is tested with different "Classifier-Free Guidance Scales"
+
+Value from left to right 1, 7, 14, 50
+
+![alt lizard as dragon with different parameters](lizard_dragon_parameters.png)
+
+It can be seen that the model changes the mask with in image that looks increasingly like the text prompt when the parameter is increased.
+
