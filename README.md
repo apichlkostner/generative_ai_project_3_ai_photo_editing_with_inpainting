@@ -20,29 +20,29 @@ This project should demonstate a simple AI photo editing tool where the user can
 
 #### Lizard replaced with a dragon
 
-![alt lizard as dragon](lizard_as_dragon.png)
+![alt lizard as dragon](images/lizard_as_dragon.png)
 
 #### lizard on a table
 
-![alt lizard on wooden table](lizard_on_wooden_table.png)
+![alt lizard on wooden table](images/lizard_on_wooden_table.png)
 
 #### lizard on a steel table
 
-![alt lizard on stelle table](lizard_on_steel_table.png)
+![alt lizard on stelle table](images/lizard_on_steel_table.png)
 
 ### Teide (mountain)
 
 #### Teide in the ocean with sun
 
-![alt Teide in the ocean](teide_in_ocean.png)
+![alt Teide in the ocean](images/teide_in_ocean.png)
 
 #### Teide modified with sun in ocean with wooden island foreground
 
-![alt Teide with sun](teide_with_sun.png)
+![alt Teide with sun](images/teide_with_sun.png)
 
 #### Teide modified without sun with wooden island foreground
 
-![alt Teide without sun](teide_without_sun.png)
+![alt Teide without sun](images/teide_without_sun.png)
 
 ## Parameter effect
 
@@ -50,12 +50,35 @@ This project should demonstate a simple AI photo editing tool where the user can
 
 Value from left to right 1, 7, 14, 50
 
-![alt lizard as dragon with different parameters](lizard_dragon_parameters.png)
+![alt lizard as dragon with different parameters](images/lizard_dragon_parameters.png)
 
 It can be seen that the model changes the mask with in image that looks increasingly like the text prompt when the parameter is increased.
 
 ## Prompt engineering
 
+A scene should be created from an image. Multiple prompts are tried to get a satisfing solution. Many of the prompts gave strange results, following is a sequence of prompts that lead to a usable result.
+
+Scene: a cat on a branch over a street with a knight riding a horse
+
+Base image
+
+![alt cat](images/cat.jpg)
+
+Prompt 1: cat sitting on a tree branch
+
+![alt cat](images/cat1.png)
+
+Prompt 1: cat sitting on a tree branch over a medieval street
+
+![alt cat](images/cat2.png)
+
+Prompt 1: cat sitting on a tree branch over a medieval street with horses
+
+![alt cat](images/cat3.png)
+
+Prompt 1: cat sitting on a tree branch over a medieval street with a knight on a horse
+
+![alt cat](images/cat4.png)
 
 ## Iterative changes
 
@@ -70,28 +93,28 @@ After every prompt, the result is the source for the next prompt.
 
 ### Original Image
 
-![alt Teide in the ocean](teide.jpg)
+![alt Teide original](images/teide.jpg)
 
 ### First prompt
 - Prompt: a green ocean with an island, a dark sky with lightning
 - Mask: Teide
 - Target: background
 
-![alt Teide in the ocean](teide_2.webp)
+![alt Teide in ocean](images/teide_2.webp)
 
 ### Second prompt
 - Prompt: a erupting vulcano with orange and red lava
 - Mask: background
 - Target: Teide
 
-![alt Teide in the ocean](teide_3.webp)
+![alt Teide as vulcano](images/teide_3.webp)
 
 ### Third prompt
 - Prompt: aliens dancing on a platform surrounded by a green glowing ocean
 - Mask: island, vulcano, sky
 - Target: Ocean
 
-![alt Teide in the ocean](teide_4.webp)
+![alt Teide with Aliens](images/teide_4.webp)
 
 -Different random number generator seed
-![alt Teide in the ocean](teide_5.webp)
+![alt Teide with Aliens other seed](images/teide_5.webp)
